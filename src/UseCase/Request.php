@@ -6,16 +6,16 @@
  * (c) Lorenzo Marzullo <marzullo.lorenzo@gmail.com>
  */
 
-namespace PhpClean;
+namespace PhpClean\UseCase;
 
 /**
- * Interface UseCaseInterface.
+ * Class Request.
  *
  * @package PhpClean
  * @author  Lorenzo Marzullo <marzullo.lorenzo@gmail.com>
  * @link    https://github.com/lorenzomar/phpclean
  */
-interface UseCaseInterface
+class Request extends AbstractMessage implements RequestInterface
 {
-    public function __invoke();
+
 }
