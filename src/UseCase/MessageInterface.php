@@ -35,6 +35,15 @@ interface MessageInterface extends \ArrayAccess, \Countable, \IteratorAggregate
     public function set($key, $value);
 
     /**
+     * setMultiple.
+     *
+     * @param array $data
+     *
+     * @return static
+     */
+    public function setMultiple(array $data);
+
+    /**
      * get.
      *
      * @param string $key     The data key

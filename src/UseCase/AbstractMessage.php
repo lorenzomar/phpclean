@@ -37,9 +37,7 @@ abstract class AbstractMessage implements MessageInterface
     {
         $this->accessor = is_null($propertyAccessor) ? new PropertyAccessor(false, true) : $propertyAccessor;
 
-        foreach ($data as $key => $value) {
-            $this->set($key, $value);
-        }
+        $this->setMultiple($data);
     }
 
     public function getIterator()
@@ -111,6 +109,13 @@ abstract class AbstractMessage implements MessageInterface
     public function set($key, $value)
     {
         return $this->offsetSet($key, $value);
+    }
+
+    public function setMultiple(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->set($key, $value);
+        }
     }
 
     public function get($key, $default = null)
