@@ -17,5 +17,12 @@ namespace PhpClean\UseCase;
  */
 interface UseCaseInterface
 {
+    /**
+     * __invoke.
+     *
+     * @param RequestInterface $request
+     *
+     * @return ResponseInterface
+     */
     public function __invoke(RequestInterface $request);
 }
