@@ -8,6 +8,7 @@
 
 namespace PhpClean\UseCase;
 
+use PhpClean\UseCase\Exception\InvalidKeyException;
 use Symfony\Component\PropertyAccess\Exception\AccessException;
 use Symfony\Component\PropertyAccess\Exception\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\Exception\UnexpectedTypeException;
@@ -23,6 +24,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 abstract class AbstractMessage implements MessageInterface
 {
+    const KEY_REGEX = '/^(?:\s+[^\s\.]+|[^\s\.])[^\.]*(?:\.(?:\s+[^\s\.]+|[^\s\.])[^\.]*)*$/';
+
     /**
      * @var PropertyAccessorInterface
      */
@@ -91,7 +94,7 @@ abstract class AbstractMessage implements MessageInterface
      */
     public function offsetUnset($offset)
     {
-        unset($this->data[$offset]);
+        // Unset operation not allowed
 
         return $this;
     }
@@ -177,6 +180,10 @@ abstract class AbstractMessage implements MessageInterface
 
     protected function prepareKey($key)
     {
-        return "[" . trim($key, '[]') . "]";
+        if (!preg_match(static::KEY_REGEX, $key)) {
+            throw new InvalidKeyException($key, static::KEY_REGEX);
+        }
+
+        return "[" . implode("][", explode('.', $key)) . "]";
     }
 }
