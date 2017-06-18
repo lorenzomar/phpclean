@@ -24,18 +24,11 @@ class Response extends AbstractMessage implements ResponseInterface
      */
     private $status;
 
-    public function __construct(
-        array $data = [],
-        $status = 'success',
-        PropertyAccessorInterface $propertyAccessor = null
-    ) {
+    public function __construct(array $data = [], PropertyAccessorInterface $propertyAccessor = null)
+    {
         parent::__construct($data, $propertyAccessor);
 
-        if ($status === static::STATUS_ERROR) {
-            $this->setAsError();
-        } else {
-            $this->setAsSuccess();
-        }
+        $this->setAsSuccess();
     }
 
     public function setAsError()
@@ -62,10 +55,14 @@ class Response extends AbstractMessage implements ResponseInterface
         return $this->status === static::STATUS_SUCCESS;
     }
 
-    public function hasError($key, $code)
+    public function hasError($key, $code = null)
     {
-        if (!$this->isError() || !$this->has($key)) {
+        if (!$this->isError()) {
             return false;
+        }
+
+        if ($code === null) {
+            return $this->has($key);
         }
 
         foreach ($this->get($key, []) as $error) {
@@ -90,10 +87,10 @@ class Response extends AbstractMessage implements ResponseInterface
         return $this->set($key, $v);
     }
 
-    public function getError($key, $code, $default = null)
+    public function getError($key, $code = null, $default = null)
     {
         if (!$this->hasError($key, $code)) {
-            return false;
+            return $default;
         }
 
         foreach ($this->get($key, []) as $error) {
